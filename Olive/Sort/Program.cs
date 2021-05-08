@@ -32,7 +32,7 @@ class Result {
         var events = ParseEvents(team1, events1);
         events.AddRange(ParseEvents(team2, events2));
 
-        events = events.OrderBy(e => e.Time).ThenBy(e=> e.EventName).ToList();
+        events = events.OrderBy(e => e.Time).ThenBy(e=> e.SecondTeamName).ToList();
 
         var output = new List<string>();
         foreach (var e in events) {
