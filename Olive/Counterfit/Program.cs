@@ -26,13 +26,16 @@ class Result {
     public static int countCounterfeit(List<string> serialNumber) {
 
         var validAmount = 0;
-        var validDenoms = new int[] { 10,20,50,100,500,1000 };
+        var validDenoms = new int[] { 10,20,50,100, 200,500,1000 };
         foreach (var serial in serialNumber) {
+            
+
             if (serial.Length < 10 || serial.Length > 12) {
+                Console.WriteLine($"serial: {serial}, length: {serial.Length}");
                 continue;
             }
 
-            Console.WriteLine($"serial: {serial}, length: {serial.Length}");
+            
 
             var starting = serial.Substring(0, 3);
             var year = serial.Substring(3, 4);
@@ -44,30 +47,37 @@ class Result {
             var validStart = true;
             foreach (var c in starting.ToCharArray()) {
                 if (!char.IsLetter(c) || !char.IsUpper(c)) {
+                    Console.WriteLine($"serial: {serial}, Starting character not valid: {c}");
                     validStart = false;
                     break;
                 }
             }
 
             if (!validStart || starting.Distinct().Count() != 3) {
+                Console.WriteLine($"serial: {serial}, Starting All 3 starting not distinct");
                 continue;
             }
 
             if (int.TryParse(year, out int calcyear)) {
                 if (calcyear < 1900 || calcyear > 2019) {
+                    Console.WriteLine($"serial: {serial}, year {calcyear} out of range");
                     continue;
                 }
             } else {
+                Console.WriteLine($"serial: {serial},unable to calc year {year}");
                 continue;
             }
 
             if (!char.IsLetter(last) || !char.IsUpper(last)) {
+                Console.WriteLine($"serial: {serial}, last character not valid {last}");
                 continue;
             }
 
             if (int.TryParse(denom, out int amount)) {
                 if (validDenoms.Contains(amount)) {
                     validAmount += amount;
+                } else {
+                    Console.WriteLine($"serial: {serial}, invalid denomination {denom}");
                 }
             }
 
