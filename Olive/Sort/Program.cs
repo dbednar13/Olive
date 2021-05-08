@@ -32,7 +32,9 @@ class Result {
         var events = ParseEvents(team1, events1);
         events.AddRange(ParseEvents(team2, events2));
 
-        events = events.OrderBy(e => e.Time).ThenBy(e=> e.SecondTeamName).ToList();
+        //events = events.OrderBy(e => e.Time).ThenBy(e=> e.SecondTeamName).ThenBy(e=> e.EventName).ToList();
+
+        events.Sort(new EventCompare());
 
         var output = new List<string>();
         foreach (var e in events) {
@@ -46,7 +48,11 @@ class Result {
     private static List<EventData> ParseEvents(string teamName, List<string> events) {
         var output = new List<EventData>();
         var integers = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+        Console.WriteLine($"Team: {teamName}");
+
         foreach (var e in events) {
+            Console.WriteLine($"{e}");
             //Again, regex would be faster/better here.
             var beginTimeIndex = e.IndexOfAny(integers);
             var endTimeIndex = e.LastIndexOfAny(integers);
@@ -108,6 +114,48 @@ class Result {
 
         }
         return output;
+    }
+
+    public class EventCompare : IComparer<EventData> {
+        public int Compare(EventData x, EventData y) {
+            var time = x.Time.CompareTo(y.Time);
+            if (time != 0) {
+                return time;
+            }
+
+            if (!x.DisplayTime.Contains('+') && y.DisplayTime.Contains('+')) {
+                return -1;
+            }
+            if (x.DisplayTime.Contains('+') && !y.DisplayTime.Contains('+')) {
+                return +1;
+            }
+            if (x.DisplayTime.Contains('+') && y.DisplayTime.Contains('+')) {
+                var xSplit = x.DisplayTime.Split('+');
+                var ySplit = y.DisplayTime.Split('+');
+                var comp = String.Compare(xSplit[1], ySplit[1]);
+                if (comp != 0) {
+                    return comp;
+                }
+            }
+
+            if (string.IsNullOrWhiteSpace(x.SecondTeamName) && string.IsNullOrWhiteSpace(y.SecondTeamName)) {
+                return String.Compare(x.EventName, y.EventName);
+            }
+
+            if (string.IsNullOrWhiteSpace(x.SecondTeamName) && !string.IsNullOrWhiteSpace(y.SecondTeamName)) {
+                return -1;
+            }
+
+            if (!string.IsNullOrWhiteSpace(x.SecondTeamName) && string.IsNullOrWhiteSpace(y.SecondTeamName)) {
+                return +1;
+            }
+
+            if (!string.IsNullOrWhiteSpace(x.SecondTeamName) && !string.IsNullOrWhiteSpace(y.SecondTeamName)) {
+                return String.CompareOrdinal(x.SecondTeamName, y.SecondTeamName);
+            }
+
+            return 0;
+        }
     }
 
 
