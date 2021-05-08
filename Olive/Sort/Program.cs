@@ -139,6 +139,16 @@ class Result {
             }
 
             if (string.IsNullOrWhiteSpace(x.SecondTeamName) && string.IsNullOrWhiteSpace(y.SecondTeamName)) {
+                //should sort g/y/r/s
+                var values = new Dictionary<string, int>();
+                values.Add("G", 0);
+                values.Add("Y", 1);
+                values.Add("R", 2);
+                values.Add("S", 3);
+
+                var xval = values[x.EventName.Trim()];
+                var yval = values[y.EventName.Trim()];
+
                 return String.Compare(x.EventName, y.EventName);
             }
 
