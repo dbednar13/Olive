@@ -32,7 +32,7 @@ class Result {
         var events = ParseEvents(team1, events1);
         events.AddRange(ParseEvents(team2, events2));
 
-        events = events.OrderBy(e => e.Time).ToList();
+        events = events.OrderBy(e => e.Time).ThenBy(e=> e.EventName).ToList();
 
         var output = new List<string>();
         foreach (var e in events) {
@@ -57,7 +57,22 @@ class Result {
             }
 
             var employeeName = e.Substring(0,beginTimeIndex);
-            var lastInfo = e.Substring(endTimeIndex +1);
+            //This should work, does locally but exception on the hackerRank side.  sad.
+            // hacking way around hackerRank's limit due to time.
+            //var lastInfo = e.Substring(endTimeIndex +1).Trim().Split(' ', 1);
+            var lastInfo = e.Substring(endTimeIndex + 1).Trim().Split(' ');
+            if (lastInfo.Length == 1) {
+                lastInfo = new string[] {lastInfo[0], ""};
+            }
+
+
+            if (lastInfo.Length > 2) {
+                for (int x = 2; x < lastInfo.Length; x++) {
+                    //should use string.Concat.
+                    lastInfo[1] = lastInfo[1] + " " + lastInfo[x];
+                }
+            }
+
 
             if (additional > 0 && (additional < beginTimeIndex || additional > endTimeIndex)) {
                 Console.WriteLine($"{e}: + is after the last number, it should not be.");
@@ -87,7 +102,8 @@ class Result {
                                            EmployeeName = employeeName,
                                            Time = time,
                                            DisplayTime = displayTime,
-                                           EventName = lastInfo
+                                           EventName = lastInfo[0],
+                                           SecondTeamName = !string.IsNullOrWhiteSpace(lastInfo[1]) ? " " + lastInfo[1] : ""
                                        });
 
         }
@@ -101,9 +117,10 @@ class Result {
         public int Time { get; set; }
         public string DisplayTime { get; set; }
         public string EventName { get; set; }
+        public string SecondTeamName{ get; set; }
 
         public override string ToString() {
-            return $"{TeamName} {EmployeeName} {DisplayTime} {EventName}";
+            return $"{TeamName} {EmployeeName}{DisplayTime} {EventName}{SecondTeamName}";
         }
 
     }
