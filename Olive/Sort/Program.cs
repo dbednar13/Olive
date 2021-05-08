@@ -29,8 +29,84 @@ class Result {
 
     public static List<string> getEventsOrder(string team1, string team2, List<string> events1, List<string> events2) {
 
+        var events = ParseEvents(team1, events1);
+        events.AddRange(ParseEvents(team2, events2));
+
+        events = events.OrderBy(e => e.Time).ToList();
+
+        var output = new List<string>();
+        foreach (var e in events) {
+            output.Add(e.ToString());
+        }
+
+        return output;
+
     }
 
+    private static List<EventData> ParseEvents(string teamName, List<string> events) {
+        var output = new List<EventData>();
+        var integers = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+        foreach (var e in events) {
+            //Again, regex would be faster/better here.
+            var beginTimeIndex = e.IndexOfAny(integers);
+            var endTimeIndex = e.LastIndexOfAny(integers);
+            var additional = e.IndexOf('+');
+
+            if (beginTimeIndex < 0 || endTimeIndex < 0) {
+                Console.WriteLine("Missing time");
+            }
+
+            var employeeName = e.Substring(0,beginTimeIndex);
+            var lastInfo = e.Substring(endTimeIndex +1);
+
+            if (additional > 0 && (additional < beginTimeIndex || additional > endTimeIndex)) {
+                Console.WriteLine($"{e}: + is after the last number, it should not be.");
+            }
+
+            var displayTime = e.Substring(beginTimeIndex, endTimeIndex - beginTimeIndex + 1);
+            var time = -1;
+            if (displayTime.Contains('+')) {
+                var temp = displayTime.Split('+');
+                try {
+                    time = int.Parse(temp[0]);
+                } catch (Exception) {
+                    //Not the cleanest, but it's fast as my time dwindles.  A try parse would be better
+                    Console.WriteLine($"{e} unable to calculate time for {displayTime}");
+                    continue;
+                }
+            } else {
+                time = int.Parse(displayTime);
+            }
+
+            if (time < 0 || time > 90) {
+                Console.WriteLine($"{e} invalid amount of time {time}");
+            }
+
+            output.Add(new EventData() {
+                                           TeamName = teamName,
+                                           EmployeeName = employeeName,
+                                           Time = time,
+                                           DisplayTime = displayTime,
+                                           EventName = lastInfo
+                                       });
+
+        }
+        return output;
+    }
+
+
+    public class EventData {
+        public string TeamName { get; set; }
+        public string EmployeeName { get; set; }
+        public int Time { get; set; }
+        public string DisplayTime { get; set; }
+        public string EventName { get; set; }
+
+        public override string ToString() {
+            return $"{TeamName} {EmployeeName} {DisplayTime} {EventName}";
+        }
+
+    }
 }
 
 class Solution {
