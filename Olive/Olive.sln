@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restocking", "Restocking\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paths", "Paths\Paths.csproj", "{37522A8B-FFAE-4982-8468-5C966516F9EB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prediction", "Prediction\Prediction.csproj", "{762862B4-5642-4D9D-BB9A-A10BFF8D6157}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sort", "Sort\Sort.csproj", "{9294D126-2121-4459-AEA2-076809C5CE0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,14 @@ Global
 		{37522A8B-FFAE-4982-8468-5C966516F9EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37522A8B-FFAE-4982-8468-5C966516F9EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37522A8B-FFAE-4982-8468-5C966516F9EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{762862B4-5642-4D9D-BB9A-A10BFF8D6157}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{762862B4-5642-4D9D-BB9A-A10BFF8D6157}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{762862B4-5642-4D9D-BB9A-A10BFF8D6157}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{762862B4-5642-4D9D-BB9A-A10BFF8D6157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9294D126-2121-4459-AEA2-076809C5CE0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9294D126-2121-4459-AEA2-076809C5CE0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9294D126-2121-4459-AEA2-076809C5CE0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9294D126-2121-4459-AEA2-076809C5CE0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
