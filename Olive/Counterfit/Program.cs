@@ -35,7 +35,8 @@ class Result {
                 continue;
             }
 
-            
+            //If I knew regex this would be the place to do it instead of all the validation - but I don't and I'm on a time limit.
+            // Would Probably be done better that way but such is life in a timed assessment.
 
             var starting = serial.Substring(0, 3);
             var year = serial.Substring(3, 4);
